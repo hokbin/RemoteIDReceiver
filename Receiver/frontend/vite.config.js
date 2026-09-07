@@ -2,11 +2,10 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-export default defineConfig(({ mode, command }) => {
+export default defineConfig(async ({ mode, command }) => {
   // Load env variables
   const env = loadEnv(mode, process.cwd(), '')
   
@@ -23,12 +22,18 @@ export default defineConfig(({ mode, command }) => {
     env.VITE_MAP_STYLE = styleName
   }
 
+  const plugins = [vue(), tailwindcss()]
+
+  // Devtools are only useful in `vite dev`, and they must not be imported
+  // anywhere else: the package touches `localStorage` while it is being
+  // evaluated, which throws under Node's test/build environments.
+  if (command === 'serve' && mode !== 'test') {
+    const { default: vueDevTools } = await import('vite-plugin-vue-devtools')
+    plugins.push(vueDevTools())
+  }
+
   return {
-    plugins: [
-      vue(),
-      vueDevTools(),
-      tailwindcss(),
-    ],
+    plugins,
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))

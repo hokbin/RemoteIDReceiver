@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { initializeMocks, initializeMockWebServer } from './mock'
 import { useMapStore } from '@/stores/map'
 
 class Drone {
@@ -16,17 +15,8 @@ class Drone {
   }
 }
 
-let client = axios
-let isInitialized = false
-if (import.meta.env.DEV && !isInitialized) {
-  console.log('Development mode, mocking http requests')
-  client = initializeMocks()
-  initializeMockWebServer()
-  isInitialized = true
-}
-
 async function getJsonResponse(url) {
-  return (await client.get(url)).data
+  return (await axios.get(url)).data
 }
 
 export const getDrone = async (sender_id) => {
@@ -48,7 +38,7 @@ export const getFlight = async (serial_number, flight_timestamp) => {
 }
 
 export const postSettings = async (settings) => {
-  const response = await client.post('/api/settings', settings)
+  const response = await axios.post('/api/settings', settings)
   if (response.status !== 200) throw new Error('Settings update failed.')
   return await response.data
 }

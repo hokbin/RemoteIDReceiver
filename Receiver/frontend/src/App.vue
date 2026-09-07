@@ -6,7 +6,7 @@
 <script setup>
 import SetupView from './components/SetupView.vue'
 import MapView from './components/MapView.vue'
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { createGoogleStyle } from 'maplibre-google-maps'
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from './stores/settings'

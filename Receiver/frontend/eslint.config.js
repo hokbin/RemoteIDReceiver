@@ -1,3 +1,4 @@
+import globals from 'globals'
 import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 import pluginVitest from '@vitest/eslint-plugin'
@@ -17,6 +18,15 @@ export default [
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   
+  {
+    // Build tooling runs in Node, not in the browser.
+    name: 'app/config-files',
+    files: ['*.config.js', 'vitest.setup.js'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
   {
     ...pluginVitest.configs.recommended,
     files: ['src/**/__tests__/*'],

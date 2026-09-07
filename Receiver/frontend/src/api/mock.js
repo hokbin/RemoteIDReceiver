@@ -1,5 +1,4 @@
 import { useMapStore } from '@/stores/map'
-import { get } from '@vueuse/core'
 import axios from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 
