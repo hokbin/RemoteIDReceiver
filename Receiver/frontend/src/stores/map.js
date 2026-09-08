@@ -20,7 +20,7 @@ class ActiveDrone {
 
 export const useMapStore = defineStore('map', () => {
   // State
-  const activeDrones = ref([]) // Map of Drones keyed by sender_id
+  const activeDrones = ref([])
   const focusedDrone = ref(null) // The drone that is centered on the map
   const infoDrone = ref(null) // The drone that is getting displayed in the Drone Info panel
 
@@ -54,6 +54,10 @@ export const useMapStore = defineStore('map', () => {
   // Drone updates
   function updateDroneLocation(sender_id, position) {
     updateLiveDroneLocation(sender_id, position)
+
+    if (!activeDrones.value.some(drone => drone.sender_id === sender_id)) {
+      activeDrones.value.push(new ActiveDrone(sender_id))
+    }
   }
 
   // Replay functionality
