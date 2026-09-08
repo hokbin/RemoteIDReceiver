@@ -51,7 +51,7 @@ cp .env.example .env
 ### 4. Build the Frontend
 The following command builds your frontend using your configured map.
 ```bash
-docker-compose up build-frontend
+docker compose up build-frontend
 ```
 
 ## Running the Application
