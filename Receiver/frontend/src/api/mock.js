@@ -114,6 +114,7 @@ let fakeLocation = [7.44744, 46.94809]
 export function initializeMockWebServer() {
   setTimeout(() => {
     const store = useMapStore()
+    let liveOnlyDroneAdded = false
 
   function updateDronePositions() {
     
@@ -121,6 +122,11 @@ export function initializeMockWebServer() {
       fakeLocation[1] += 0.0001 * Math.random()
       fakeLocation[0] += 0.0001 * Math.random()
       store.updateDroneLocation(drone.sender_id, fakeLocation)
+    }
+
+    if (!liveOnlyDroneAdded) {
+      liveOnlyDroneAdded = true
+      store.updateDroneLocation('mock-live-drone-2', [7.44944, 46.94909])
     }
     
      setTimeout(updateDronePositions, 2000); // Update every 2 seconds
